@@ -15,6 +15,8 @@ public interface NewsService {
 	NewsWithDetailDTO getNewsWithDetail(Integer newId);
 	
 	Page<News> getList(Pageable pageable);
+	
+	Page<News> getCategory(Integer categoryId,Pageable pageable);
 
 	List<News> getHotNews();
 
