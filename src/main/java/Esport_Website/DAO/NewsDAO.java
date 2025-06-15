@@ -13,5 +13,6 @@ import Esport_Website.entity.News;
 @Repository
 public interface NewsDAO extends JpaRepository<News, Integer> {
 	Page<News> findAllByOrderByRemainingPointDesc(Pageable pageable);
+	Page<News> findByCategory_CategoryId(Integer categoryId, Pageable pageable);
 	List<News> findTop5ByOrderByViewsDesc();
 }

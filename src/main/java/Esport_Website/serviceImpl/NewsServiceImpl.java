@@ -55,6 +55,11 @@ public class NewsServiceImpl implements NewsService{
 	public List<News> getHotNews() {
 		return dao.findTop5ByOrderByViewsDesc();
 	}
+
+	@Override
+	public Page<News> getCategory(Integer categoryId,Pageable pageable) {
+		return dao.findByCategory_CategoryId(categoryId, pageable);
+	}
 	
 
 }
