@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import Esport_Website.entity.News;
+import Esport_Website.entity.NewsWithDetailDTO;
 import Esport_Website.service.NewsService;
 
 @RestController
@@ -32,6 +34,13 @@ public class NewsListController {
 		List<News> hotNews = newsService.getHotNews();
 		
 		return hotNews;
+	}
+	
+	@GetMapping("/api/news/category/{categoryId}")
+	public Page<News> getCategory(@PathVariable Integer categoryId,@RequestParam(defaultValue = "0") int page,
+	        @RequestParam(defaultValue = "5") int size) {
+		PageRequest pageable = PageRequest.of(page, size);
+        return newsService.getCategory(categoryId,pageable);
 	}
 	
 }
