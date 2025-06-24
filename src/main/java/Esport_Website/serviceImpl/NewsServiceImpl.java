@@ -1,5 +1,6 @@
 package Esport_Website.serviceImpl;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,9 +39,10 @@ public class NewsServiceImpl implements NewsService{
         dto.setAuthorName(news.getAuthor().getName());
 
         List<String> detailList = news.getNewsDetails()
-            .stream()
-            .map(NewsDetail::getDetail)
-            .collect(Collectors.toList());
+        	    .stream()
+        	    .sorted(Comparator.comparing(NewsDetail::getDetailsNumber))
+        	    .map(NewsDetail::getDetail)
+        	    .collect(Collectors.toList());
 
         dto.setDetails(detailList);
         return dto;
@@ -59,6 +61,11 @@ public class NewsServiceImpl implements NewsService{
 	@Override
 	public Page<News> getCategory(Integer categoryId,Pageable pageable) {
 		return dao.findByCategory_CategoryId(categoryId, pageable);
+	}
+
+	@Override
+	public List<News> getSuggestNews() {
+		return dao.findTop5ByOrderByRemainingPointDesc();
 	}
 	
 

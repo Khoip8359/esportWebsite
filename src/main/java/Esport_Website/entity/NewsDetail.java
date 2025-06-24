@@ -28,10 +28,12 @@ public class NewsDetail {
     @ManyToOne
     @JoinColumn(name = "news_id")
     @ToString.Exclude
-    @JsonBackReference   // Thêm annotation này
+    @JsonBackReference 
     private News news;
 
     @Column(columnDefinition = "TEXT")
     private String detail;
+    
+    private int detailsNumber;
 }
 
