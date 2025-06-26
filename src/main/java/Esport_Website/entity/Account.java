@@ -1,4 +1,4 @@
-package Esport_Website.entity;
+	package Esport_Website.entity;
 
 import java.util.HashSet;
 import java.util.Set;

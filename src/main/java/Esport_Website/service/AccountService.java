@@ -1,5 +1,10 @@
 package Esport_Website.service;
 
-public interface AccountService {
+import Esport_Website.dto.LoginRequest;
+import Esport_Website.dto.RegisterRequest;
+import Esport_Website.entity.Account;
 
+public interface AccountService {
+    Account login(LoginRequest request);
+    Account register(RegisterRequest request);
 }
