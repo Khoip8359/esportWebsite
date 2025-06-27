@@ -15,7 +15,7 @@ public class SecurityConfig {
         http
             .csrf().disable()
             .authorizeHttpRequests()
-                .requestMatchers("/api/**").permitAll() // mở API không cần login
+                .requestMatchers("/api/**").permitAll()
                 .anyRequest().authenticated()
             .and()
             .formLogin();
