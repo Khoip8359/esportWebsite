@@ -1,4 +1,4 @@
-package Esport_Website.entity;
+package Esport_Website.dto;
 
 import java.util.Date;
 import java.util.List;
