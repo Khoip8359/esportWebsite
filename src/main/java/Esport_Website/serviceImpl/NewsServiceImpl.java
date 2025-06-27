@@ -67,6 +67,9 @@ public class NewsServiceImpl implements NewsService{
 	public List<News> getSuggestNews() {
 		return dao.findTop5ByOrderByRemainingPointDesc();
 	}
-	
 
+	@Override
+	public Page<News> searchNews(String keyword, Pageable pageable) {
+	    return dao.findByTitleContainingIgnoreCase(keyword, pageable);
+	}
 }

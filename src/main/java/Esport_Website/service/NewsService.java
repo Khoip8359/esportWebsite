@@ -22,4 +22,5 @@ public interface NewsService {
 	
 	List<News> getSuggestNews();
 
+	Page<News> searchNews(String keyword, Pageable pageable);
 }
