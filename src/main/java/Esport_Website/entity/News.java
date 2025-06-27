@@ -61,7 +61,7 @@ public class News {
 
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
-    @JsonManagedReference    // Thêm annotation này
+    @JsonManagedReference
     private List<NewsDetail> newsDetails;
 }
 

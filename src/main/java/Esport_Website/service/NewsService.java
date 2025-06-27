@@ -19,5 +19,8 @@ public interface NewsService {
 	Page<News> getCategory(Integer categoryId,Pageable pageable);
 
 	List<News> getHotNews();
+	
+	List<News> getSuggestNews();
 
+	Page<News> searchNews(String keyword, Pageable pageable);
 }
