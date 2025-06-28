@@ -7,4 +7,5 @@ import Esport_Website.entity.Account;
 public interface AccountService {
     Account login(LoginRequest request);
     Account register(RegisterRequest request);
+    void encryptAllPlainTextPasswords();
 }

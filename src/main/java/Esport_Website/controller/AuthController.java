@@ -1,17 +1,23 @@
 package Esport_Website.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import Esport_Website.dto.LoginRequest;
 import Esport_Website.dto.RegisterRequest;
 import Esport_Website.entity.Account;
 import Esport_Website.service.AccountService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "*")
 public class AuthController {
 
     @Autowired
@@ -34,6 +40,16 @@ public class AuthController {
             return ResponseEntity.ok(account);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/encrypt-all-passwords")
+    public ResponseEntity<?> encryptAllPasswords() {
+        try {
+            accountService.encryptAllPlainTextPasswords();
+            return ResponseEntity.ok("Đã mã hóa tất cả mật khẩu thành công");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Lỗi: " + e.getMessage());
         }
     }
 
