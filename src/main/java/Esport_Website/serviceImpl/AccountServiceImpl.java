@@ -1,10 +1,12 @@
 package Esport_Website.serviceImpl;
 
 import Esport_Website.DAO.AccountDAO;
+import Esport_Website.DAO.RoleDAO;
 import Esport_Website.DAO.UsersDAO;
 import Esport_Website.dto.LoginRequest;
 import Esport_Website.dto.RegisterRequest;
 import Esport_Website.entity.Account;
+import Esport_Website.entity.Role;
 import Esport_Website.entity.Users;
 import Esport_Website.service.AccountService;
 
@@ -12,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -23,6 +27,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private UsersDAO usersDAO;
+
+    @Autowired
+    private RoleDAO roleDAO;
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -45,13 +52,20 @@ public class AccountServiceImpl implements AccountService {
                 .build();
         usersDAO.save(user);
 
+        Optional<Role> defaultRole = roleDAO.findById(1);
+        Set<Role> roles = new HashSet<>();
+        if (defaultRole.isPresent()) {
+            roles.add(defaultRole.get());
+        }
+
         Account account = Account.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .point(0)
                 .user(user)
+                .roles(roles)
                 .build();
-
+        
         return accountDAO.save(account);
     }
 

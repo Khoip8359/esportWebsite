@@ -26,8 +26,7 @@ public class Users {
 
     private String name;
 
-    // gender kiểu bit, ánh xạ với Boolean
-    private Boolean gender;
+    private Gender gender;
 
     private Date birthday;
     private String phone;
@@ -37,4 +36,10 @@ public class Users {
     private String description;
 
     private Integer remainingPoint = 0;
+    
+    public enum Gender{
+    	M,
+    	F,
+    	O
+    }
 }
