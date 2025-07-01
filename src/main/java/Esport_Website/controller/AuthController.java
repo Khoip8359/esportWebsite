@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.StringUtils;
 
+import Esport_Website.dto.AccountRequest;
 import Esport_Website.dto.LoginRequest;
 import Esport_Website.dto.RegisterRequest;
 import Esport_Website.entity.Account;
@@ -25,6 +27,12 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        if (request == null ||
+            !StringUtils.hasText(request.getUsername()) ||
+            !StringUtils.hasText(request.getPassword())) {
+            return ResponseEntity.badRequest().body("Username và password không được để trống");
+        }
+        System.out.println(request);
         try {
             Account account = accountService.login(request);
             return ResponseEntity.ok(account);
@@ -51,6 +59,16 @@ public class AuthController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Lỗi: " + e.getMessage());
         }
+    }
+    
+    @PostMapping("/changePassword")
+    public ResponseEntity<?> changePass(@Valid @RequestBody AccountRequest request){
+    	try {
+    		Account account = accountService.changePassword(request);
+    		return ResponseEntity.ok(account);
+    	}catch (RuntimeException e) {
+    		return ResponseEntity.badRequest().body(e.getMessage());
+    	}
     }
     
 }

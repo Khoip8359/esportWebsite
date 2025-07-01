@@ -1,5 +1,6 @@
 package Esport_Website.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -23,4 +24,6 @@ public interface NewsService {
 	List<News> getSuggestNews();
 
 	Page<News> searchNews(String keyword, Pageable pageable);
+	
+	Page<News> getNewsByDate(java.util.Date date, Pageable pageable);
 }

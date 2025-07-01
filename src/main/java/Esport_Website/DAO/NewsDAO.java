@@ -17,5 +17,6 @@ public interface NewsDAO extends JpaRepository<News, Integer> {
 	List<News> findTop5ByOrderByViewsDesc();
 	List<News> findTop5ByOrderByRemainingPointDesc();
 	Page<News> findByTitleContainingIgnoreCase(String keyword, Pageable pageable);
+	Page<News> findByCreatedDateBetween(java.util.Date startDate, java.util.Date endDate, Pageable pageable);
 	
 }

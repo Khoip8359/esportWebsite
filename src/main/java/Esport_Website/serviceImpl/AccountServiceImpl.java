@@ -3,6 +3,7 @@ package Esport_Website.serviceImpl;
 import Esport_Website.DAO.AccountDAO;
 import Esport_Website.DAO.RoleDAO;
 import Esport_Website.DAO.UsersDAO;
+import Esport_Website.dto.AccountRequest;
 import Esport_Website.dto.LoginRequest;
 import Esport_Website.dto.RegisterRequest;
 import Esport_Website.entity.Account;
@@ -71,20 +72,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account login(LoginRequest request) {
-        System.out.println("=== DEBUG LOGIN ===");
-        System.out.println("Username: " + request.getUsername());
-        System.out.println("Password length: " + (request.getPassword() != null ? request.getPassword().length() : "null"));
-        
         Optional<Account> accountOpt = accountDAO.findByUsername(request.getUsername());
         if (accountOpt.isPresent()) {
             Account account = accountOpt.get();
             String storedPassword = account.getPassword();
-            
-            System.out.println("Found account: " + account.getUsername());
-            System.out.println("Stored password: " + storedPassword);
-            System.out.println("Stored password starts with $2a$: " + storedPassword.startsWith("$2a$"));
-            System.out.println("Stored password starts with $2b$: " + storedPassword.startsWith("$2b$"));
-            System.out.println("Stored password starts with $2y$: " + storedPassword.startsWith("$2y$"));
             
             // Kiểm tra nếu mật khẩu đã được mã hóa BCrypt
             if (storedPassword.startsWith("$2a$") || storedPassword.startsWith("$2b$") || storedPassword.startsWith("$2y$")) {
@@ -137,4 +128,37 @@ public class AccountServiceImpl implements AccountService {
         
         System.out.println("Đã mã hóa " + encryptedCount + " mật khẩu");
     }
+
+	@Override
+	public Account changePassword(AccountRequest request) {
+		Optional<Account> existing = accountDAO.findByUsername(request.getUsername());
+		
+		if (!existing.isPresent()) {
+			throw new RuntimeException("Tài khoản không tồn tại");
+		}
+		
+		Account account = existing.get();
+		
+        if (request.getOldPassword().equals(request.getNewPassword())) {
+            throw new RuntimeException("Mật khẩu mới không được trùng với mật khẩu cũ");
+        }
+
+        if (!passwordEncoder.matches(request.getOldPassword(), account.getPassword())) {
+            throw new RuntimeException("Mật khẩu cũ không đúng");
+        }
+
+        if (!request.getNewPassword().equals(request.getConfirmPassword())) {
+            throw new RuntimeException("Mật khẩu xác nhận không đúng");
+        }
+
+        // Cập nhật mật khẩu mới
+        account.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        
+        // Lưu account đã cập nhật
+        Account updatedAccount = accountDAO.save(account);
+        
+        System.out.println("Đổi mật khẩu thành công cho user: " + request.getUsername());
+         
+		return updatedAccount; 
+	}
 }

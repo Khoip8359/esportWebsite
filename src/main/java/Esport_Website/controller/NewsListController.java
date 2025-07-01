@@ -1,5 +1,7 @@
 package Esport_Website.controller;
 
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,5 +62,21 @@ public class NewsListController {
 	    
 	    PageRequest pageable = PageRequest.of(page, size);
 	    return newsService.searchNews(keyword, pageable);
+	}
+	
+	@GetMapping("/api/news/by-date")
+	public Page<News> getNewsByDate(
+	    @RequestParam String date,
+	    @RequestParam(defaultValue = "0") int page,
+	    @RequestParam(defaultValue = "5") int size) {
+	    
+	    try {
+	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	        Date parsedDate = dateFormat.parse(date);
+	        PageRequest pageable = PageRequest.of(page, size);
+	        return newsService.getNewsByDate(parsedDate, pageable);
+	    } catch (Exception e) {
+	        throw new RuntimeException("Invalid date format. Use yyyy-MM-dd", e);
+	    }
 	}
 }

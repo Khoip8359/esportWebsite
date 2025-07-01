@@ -1,5 +1,6 @@
 package Esport_Website.serviceImpl;
 
+import java.util.Date;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -71,5 +72,14 @@ public class NewsServiceImpl implements NewsService{
 	@Override
 	public Page<News> searchNews(String keyword, Pageable pageable) {
 	    return dao.findByTitleContainingIgnoreCase(keyword, pageable);
+	}
+
+	@Override
+	public Page<News> getNewsByDate(Date date, Pageable pageable) {
+	    // Convert LocalDate to Date range for the entire day
+	    java.time.LocalDate localDate = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+	    Date startOfDay = Date.from(localDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+	    Date endOfDay = Date.from(localDate.plusDays(1).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+	    return dao.findByCreatedDateBetween(startOfDay, endOfDay, pageable);
 	}
 }
