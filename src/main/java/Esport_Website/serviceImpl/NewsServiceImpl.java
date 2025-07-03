@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import Esport_Website.DAO.NewsDAO;
+import Esport_Website.DAO.ReactDAO;
 import Esport_Website.dto.NewsWithDetailDTO;
 import Esport_Website.entity.News;
 import Esport_Website.entity.NewsDetail;
@@ -20,6 +21,9 @@ import Esport_Website.service.NewsService;
 public class NewsServiceImpl implements NewsService{
 	@Autowired
 	NewsDAO dao;
+	
+	@Autowired
+	ReactDAO rdao;
 
 	@Override
 	public List<News> getALL() {
@@ -29,6 +33,7 @@ public class NewsServiceImpl implements NewsService{
 	@Override
     public NewsWithDetailDTO getNewsWithDetail(Integer newsId) {
         News news = dao.findById(newsId).orElse(null);
+        int likeCount = rdao.countByNews_NewsId(newsId).orElse(0);
         if (news == null) return null;
 
         NewsWithDetailDTO dto = new NewsWithDetailDTO();
@@ -38,6 +43,8 @@ public class NewsServiceImpl implements NewsService{
         dto.setThumbnail(news.getThumbnail());
         dto.setCreatedDate(news.getCreatedDate());
         dto.setAuthorName(news.getAuthor().getName());
+        dto.setViews(news.getViews());
+        dto.setLikes(likeCount);
 
         List<String> detailList = news.getNewsDetails()
         	    .stream()

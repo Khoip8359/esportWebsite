@@ -11,6 +11,8 @@ public class NewsWithDetailDTO {
     private String title;
     private String subtitle;
     private String thumbnail;
+    private int views;
+    private int likes;
     private Date createdDate;
     private String authorName;
     private List<String> details;

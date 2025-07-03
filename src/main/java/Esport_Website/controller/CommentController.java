@@ -31,9 +31,11 @@ public class CommentController {
 	
 	@PostMapping("/api/comments/add")
 	public ResponseEntity<?> addComment(@RequestBody CommentRequest comment) {
-		
-		Comment cmt = commentService.addComment(comment); 
-		
-		return ResponseEntity.ok(cmt);
+		try {
+			Comment cmt = commentService.addComment(comment); 
+            return ResponseEntity.ok(cmt);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 	}
 }

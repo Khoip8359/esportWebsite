@@ -1,7 +1,6 @@
 package Esport_Website.serviceImpl;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,7 @@ public class CommentServiceImpl implements CommentService{
 
 	@Override
 	public List<Comment> findAllByNewsId(Integer newsId) {
-		return dao.findAllByNews_NewsId(newsId);
+		return dao.findAllByNews_NewsIdOrderByDateDesc(newsId);
 	}
 
 	@Override

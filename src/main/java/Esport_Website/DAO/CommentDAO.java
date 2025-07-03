@@ -9,5 +9,5 @@ import Esport_Website.entity.Comment;
 
 @Repository
 public interface CommentDAO extends JpaRepository<Comment, Integer>{
-	List<Comment> findAllByNews_NewsId(Integer newsId);
+	List<Comment> findAllByNews_NewsIdOrderByDateDesc(Integer newsId);
 }
