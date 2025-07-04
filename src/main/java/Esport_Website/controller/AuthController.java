@@ -46,6 +46,7 @@ public class AuthController {
         try {
             Account account = accountService.register(request);
             return ResponseEntity.ok(account);
+            
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
