@@ -58,27 +58,27 @@ public class NewsServiceImpl implements NewsService{
 
 	@Override
 	public Page<News> getList(Pageable pageable) {
-		return dao.findAllByOrderByRemainingPointDesc(pageable);
+		return dao.findAllByStatusOrderByRemainingPointDesc("published",pageable);
 	}
 
 	@Override
 	public List<News> getHotNews() {
-		return dao.findTop5ByOrderByViewsDesc();
+		return dao.findTop5ByStatusOrderByViewsDesc("published");
 	}
 
 	@Override
 	public Page<News> getCategory(Integer categoryId,Pageable pageable) {
-		return dao.findByCategory_CategoryId(categoryId, pageable);
+		return dao.findByCategory_CategoryIdAndStatus(categoryId,"published", pageable);
 	}
 
 	@Override
 	public List<News> getSuggestNews() {
-		return dao.findTop5ByOrderByRemainingPointDesc();
+		return dao.findTop5ByStatusOrderByRemainingPointDesc("published");
 	}
 
 	@Override
 	public Page<News> searchNews(String keyword, Pageable pageable) {
-	    return dao.findByTitleContainingIgnoreCase(keyword, pageable);
+	    return dao.findByTitleContainingIgnoreCaseAndStatus(keyword,"published", pageable);
 	}
 
 	@Override

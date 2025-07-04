@@ -35,6 +35,8 @@ public class News {
 
     private String title;
     private String status;
+    
+    @Default
     private Integer views = 0;
 
     @ManyToOne

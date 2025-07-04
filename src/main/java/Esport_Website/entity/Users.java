@@ -4,12 +4,15 @@ import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,6 +29,7 @@ public class Users {
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     private Date birthday;
@@ -34,7 +38,8 @@ public class Users {
 
     @Column(columnDefinition = "TEXT")
     private String description;
-
+    
+    @Default
     private Integer remainingPoint = 0;
     
     public enum Gender{
