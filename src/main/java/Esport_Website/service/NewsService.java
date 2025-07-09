@@ -26,4 +26,6 @@ public interface NewsService {
 	Page<News> searchNews(String keyword, Pageable pageable);
 	
 	Page<News> getNewsByDate(Date date, Pageable pageable);
+
+	List<News> getNewsByUser(Integer userId);
 }

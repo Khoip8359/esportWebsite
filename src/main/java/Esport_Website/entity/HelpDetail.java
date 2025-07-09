@@ -2,6 +2,7 @@ package Esport_Website.entity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +26,7 @@ public class HelpDetail {
 
     @ManyToOne
     @JoinColumn(name = "help_id")
+    @JsonIgnore
     private Help help;
 
     private Date helpTime;

@@ -79,4 +79,12 @@ public class NewsListController {
 	        throw new RuntimeException("Invalid date format. Use yyyy-MM-dd", e);
 	    }
 	}
+	
+	@GetMapping("/api/news/{userId}")
+	public List<News> getNewsByUser(@PathVariable Integer userId){
+		
+		List<News> news = newsService.getNewsByUser(userId);
+		
+		return news;
+	}
 }

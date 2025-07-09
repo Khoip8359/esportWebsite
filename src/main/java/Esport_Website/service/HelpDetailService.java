@@ -1,5 +1,10 @@
 package Esport_Website.service;
 
-public interface HelpDetailService {
+import Esport_Website.entity.HelpDetail;
+import java.util.List;
 
+public interface HelpDetailService {
+    List<HelpDetail> findByHelpId(Integer helpId);
+    HelpDetail save(HelpDetail detail);
+    List<HelpDetail> findBySenderUserId(Integer userId);
 }

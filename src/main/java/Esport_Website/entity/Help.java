@@ -3,6 +3,7 @@ package Esport_Website.entity;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,4 +35,7 @@ public class Help {
 
     @OneToMany(mappedBy = "help", cascade = CascadeType.ALL)
     private List<HelpDetail> details;
+    
+    @Column(nullable = false)
+    private String merge;
 }

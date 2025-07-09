@@ -1,5 +1,9 @@
 package Esport_Website.service;
 
-public interface HelpService {
+import Esport_Website.entity.Help;
 
+public interface HelpService {
+    Help findById(Integer helpId);
+    Help findBySenderId(Integer userId);
+    Help save(Help help);
 }

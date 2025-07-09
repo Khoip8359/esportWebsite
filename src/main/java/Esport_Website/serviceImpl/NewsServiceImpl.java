@@ -36,6 +36,10 @@ public class NewsServiceImpl implements NewsService{
         int likeCount = rdao.countByNews_NewsId(newsId).orElse(0);
         if (news == null) return null;
 
+        // Tăng lượt view
+        news.setViews(news.getViews() + 1);
+        dao.save(news);
+
         NewsWithDetailDTO dto = new NewsWithDetailDTO();
         dto.setNewsId(news.getNewsId());
         dto.setTitle(news.getTitle());
@@ -88,5 +92,10 @@ public class NewsServiceImpl implements NewsService{
 	    Date startOfDay = Date.from(localDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
 	    Date endOfDay = Date.from(localDate.plusDays(1).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
 	    return dao.findByCreatedDateBetween(startOfDay, endOfDay, pageable);
+	}
+
+	@Override
+	public List<News> getNewsByUser(Integer userId) {
+		return dao.findByAuthor_UserIdOrderByViewsDesc(userId);
 	}
 }

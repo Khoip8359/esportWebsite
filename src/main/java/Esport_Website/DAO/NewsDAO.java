@@ -24,4 +24,6 @@ public interface NewsDAO extends JpaRepository<News, Integer> {
 	
 	Page<News> findByCreatedDateBetween(java.util.Date startDate, java.util.Date endDate, Pageable pageable);
 	
+	List<News> findByAuthor_UserIdOrderByViewsDesc(Integer authorId);
+	
 }
