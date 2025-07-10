@@ -9,4 +9,6 @@ import Esport_Website.entity.Help;
 public interface HelpDAO extends JpaRepository<Help, Integer>{
 
     Help findBySender_UserId(Integer userId);
+    Help findByMerge(String merge);
+    java.util.List<Help> findBySender_UserIdOrReceiver_UserId(Integer senderUserId, Integer receiverUserId);
 }

@@ -33,4 +33,6 @@ public class HelpDetail {
 
     @Column(columnDefinition = "TEXT")
     private String detail;
+    
+    private String sender;
 }

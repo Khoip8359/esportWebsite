@@ -27,4 +27,14 @@ public class HelpServiceImpl implements HelpService{
     public Help save(Help help) {
         return helpDAO.save(help);
     }
+
+    @Override
+    public Help findByMerge(String merge) {
+        return helpDAO.findByMerge(merge);
+    }
+
+    @Override
+    public java.util.List<Help> findByUserIdInMerges(Integer userId) {
+        return helpDAO.findBySender_UserIdOrReceiver_UserId(userId, userId);
+    }
 }

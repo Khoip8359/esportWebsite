@@ -1,18 +1,12 @@
 package Esport_Website.dto;
 
+import lombok.Data;
+
+@Data
 public class ChatMessage {
-    private Integer helpId;
-    private Integer userId;
+    private Integer userId1;
+    private Integer userId2;
     private String from;
     private String text;
-
-    // Getters and setters
-    public Integer getHelpId() { return helpId; }
-    public void setHelpId(Integer helpId) { this.helpId = helpId; }
-    public Integer getUserId() { return userId; }
-    public void setUserId(Integer userId) { this.userId = userId; }
-    public String getFrom() { return from; }
-    public void setFrom(String from) { this.from = from; }
-    public String getText() { return text; }
-    public void setText(String text) { this.text = text; }
+    private String sender;
 } 

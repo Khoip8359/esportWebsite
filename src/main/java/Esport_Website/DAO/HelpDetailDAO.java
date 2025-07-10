@@ -11,6 +11,10 @@ import Esport_Website.entity.HelpDetail;
 public interface HelpDetailDAO extends JpaRepository<HelpDetail, Integer>{
     java.util.List<HelpDetail> findByHelp_HelpId(Integer helpId);
 
-    @Query("SELECT d FROM HelpDetail d WHERE d.help.sender.userId = :userId")
-    java.util.List<HelpDetail> findBySenderUserId(@Param("userId") Integer userId);
+    @Query("SELECT d FROM HelpDetail d WHERE d.sender = :userId")
+    java.util.List<HelpDetail> findBySenderUserId(@Param("userId") String userId);
+
+    java.util.List<HelpDetail> findByHelp_Merge(String merge);
+    
+    java.util.List<HelpDetail> findBySender(String sender);
 }
