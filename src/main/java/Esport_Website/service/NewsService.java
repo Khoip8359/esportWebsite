@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import Esport_Website.dto.CreateNewsRequest;
 import Esport_Website.dto.NewsWithDetailDTO;
 import Esport_Website.entity.News;
 
@@ -28,4 +29,6 @@ public interface NewsService {
 	Page<News> getNewsByDate(Date date, Pageable pageable);
 
 	List<News> getNewsByUser(Integer userId);
+	
+	News createNews(CreateNewsRequest request);
 }

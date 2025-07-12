@@ -10,11 +10,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import Esport_Website.DAO.CategoryDAO;
 import Esport_Website.DAO.NewsDAO;
 import Esport_Website.DAO.ReactDAO;
+import Esport_Website.DAO.UsersDAO;
+import Esport_Website.dto.CreateNewsRequest;
 import Esport_Website.dto.NewsWithDetailDTO;
+import Esport_Website.entity.Category;
 import Esport_Website.entity.News;
 import Esport_Website.entity.NewsDetail;
+import Esport_Website.entity.Users;
 import Esport_Website.service.NewsService;
 
 @Service
@@ -24,6 +29,12 @@ public class NewsServiceImpl implements NewsService{
 	
 	@Autowired
 	ReactDAO rdao;
+	
+	@Autowired
+	CategoryDAO categoryDAO;
+	
+	@Autowired
+	UsersDAO usersDAO;
 
 	@Override
 	public List<News> getALL() {
@@ -97,5 +108,61 @@ public class NewsServiceImpl implements NewsService{
 	@Override
 	public List<News> getNewsByUser(Integer userId) {
 		return dao.findByAuthor_UserIdOrderByViewsDesc(userId);
+	}
+	
+	@Override
+	public News createNews(CreateNewsRequest request) {
+		// Validate required fields
+		if (request.getTitle() == null || request.getTitle().trim().isEmpty()) {
+			throw new RuntimeException("Tiêu đề không được để trống");
+		}
+		if (request.getCategoryId() == null) {
+			throw new RuntimeException("Danh mục không được để trống");
+		}
+		if (request.getAuthorId() == null) {
+			throw new RuntimeException("Tác giả không được để trống");
+		}
+		if (request.getDetails() == null || request.getDetails().isEmpty()) {
+			throw new RuntimeException("Nội dung không được để trống");
+		}
+		
+		// Get category and author
+		Category category = categoryDAO.findById(request.getCategoryId())
+			.orElseThrow(() -> new RuntimeException("Danh mục không tồn tại"));
+		Users author = usersDAO.findById(request.getAuthorId())
+			.orElseThrow(() -> new RuntimeException("Tác giả không tồn tại"));
+		
+		// Create news
+		int paidPoint = request.getPaidPoint() != null ? request.getPaidPoint() : 0;
+		News news = News.builder()
+			.title(request.getTitle())
+			.subtitle(request.getSubtitle())
+			.thumbnail(request.getThumbnail())
+			.category(category)
+			.author(author)
+			.status(request.getStatus() != null ? request.getStatus() : "draft")
+			.paidPoint(paidPoint)
+			.remainingPoint(paidPoint)
+			.build();
+		
+		// Save news first to get the ID
+		News savedNews = dao.save(news);
+		
+		// Create news details
+		List<NewsDetail> newsDetails = request.getDetails().stream()
+			.map(detail -> {
+				NewsDetail newsDetail = new NewsDetail();
+				newsDetail.setNews(savedNews);
+				newsDetail.setDetail(detail);
+				newsDetail.setDetailsNumber(request.getDetails().indexOf(detail) + 1);
+				return newsDetail;
+			})
+			.collect(Collectors.toList());
+		
+		// Set news details
+		savedNews.setNewsDetails(newsDetails);
+		
+		// Save the news with details
+		return dao.save(savedNews);
 	}
 }

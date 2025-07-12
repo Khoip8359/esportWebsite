@@ -20,5 +20,4 @@ public class NewsDetailController {
 		NewsWithDetailDTO dto = newsService.getNewsWithDetail(newsId);
 		return dto;
 	}
-	
 }
