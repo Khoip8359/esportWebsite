@@ -63,4 +63,20 @@ public class CloudinaryService {
         }
         return deletedCount;
     }
+
+    /**
+     * Synchronously deletes an image from Cloudinary by publicId.
+     * @param publicId the public ID of the image
+     * @return true if deletion was successful, false otherwise
+     */
+    public boolean deleteImage(String publicId) {
+        try {
+            Map<?, ?> result = cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+            Object status = result.get("result");
+            return status != null && status.toString().equalsIgnoreCase("ok");
+        } catch (IOException e) {
+            System.err.println("[Sync] Lỗi xóa ảnh: " + publicId);
+            return false;
+        }
+    }
 } 
