@@ -3,6 +3,7 @@ package Esport_Website.serviceImpl;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import Esport_Website.DAO.NewsDAO;
@@ -37,9 +38,11 @@ public class ReactServiceImpl implements ReactService{
 		
 		if(!check.isPresent()) {
 			React react = React.builder().user(user).news(news).build();
+			logReactAsync(user.getUserId(), news.getNewsId(), true);
 			return dao.save(react);
 		}else {
 			dao.deleteById(check.get().getReactId());
+			logReactAsync(user.getUserId(), news.getNewsId(), false);
 			return null;
 		}
 	}
@@ -50,4 +53,9 @@ public class ReactServiceImpl implements ReactService{
 		return check;
 	}
 
+	@Async
+	public void logReactAsync(Integer userId, Integer newsId, boolean isLike) {
+		String action = isLike ? "LIKE" : "UNLIKE";
+		System.out.println("[Async] User " + userId + " " + action + " news " + newsId + " trên thread: " + Thread.currentThread().getName());
+	}
 }

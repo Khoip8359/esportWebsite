@@ -3,6 +3,7 @@ package Esport_Website.serviceImpl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import Esport_Website.DAO.CommentDAO;
@@ -44,7 +45,13 @@ public class CommentServiceImpl implements CommentService{
 				.commentDetail(comment.getCommentDetail())
 				.date(comment.getDate()).build();
 		
-		return dao.save(cmt);
+		Comment saved = dao.save(cmt);
+		logCommentAsync(user.getUserId(), news.getNewsId(), comment.getCommentDetail());
+		return saved;
 	}
 
+	@Async
+	public void logCommentAsync(Integer userId, Integer newsId, String detail) {
+		System.out.println("[Async] User " + userId + " COMMENT news " + newsId + ": " + detail + " trên thread: " + Thread.currentThread().getName());
+	}
 }

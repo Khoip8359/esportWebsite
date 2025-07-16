@@ -3,12 +3,14 @@ package Esport_Website.service;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import Esport_Website.dto.UploadResponse;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -39,12 +41,26 @@ public class CloudinaryService {
         return new UploadResponse(secureUrl, publicId, "Upload successful", true);
     }
     
-    public boolean deleteImage(String publicId) {
+    @Async
+    public void deleteImageAsync(String publicId) {
         try {
             cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
-            return true;
+            System.out.println("[Async] Đã xóa ảnh: " + publicId + " trên thread: " + Thread.currentThread().getName());
         } catch (IOException e) {
-            return false;
+            System.err.println("[Async] Lỗi xóa ảnh: " + publicId);
         }
+    }
+
+    public int deleteMultipleImages(List<String> publicIds) {
+        if (publicIds == null || publicIds.isEmpty()) {
+            return 0;
+        }
+        int deletedCount = 0;
+        for (String publicId : publicIds) {
+            // Gọi async thay vì đồng bộ
+            deleteImageAsync(publicId);
+            deletedCount++;
+        }
+        return deletedCount;
     }
 } 

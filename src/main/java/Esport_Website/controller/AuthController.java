@@ -32,7 +32,6 @@ public class AuthController {
             !StringUtils.hasText(request.getPassword())) {
             return ResponseEntity.badRequest().body("Username và password không được để trống");
         }
-        System.out.println(request);
         try {
             Account account = accountService.login(request);
             return ResponseEntity.ok(account);

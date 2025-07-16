@@ -134,6 +134,15 @@ public class NewsServiceImpl implements NewsService{
 		
 		// Create news
 		int paidPoint = request.getPaidPoint() != null ? request.getPaidPoint() : 0;
+		// Bổ sung: Trừ điểm của user nếu đủ điểm
+		if (paidPoint > 0) {
+			if (author.getRemainingPoint() == null) author.setRemainingPoint(0);
+			if (author.getRemainingPoint() < paidPoint) {
+				throw new RuntimeException("Bạn không đủ điểm để gửi đơn này!");
+			}
+			author.setRemainingPoint(author.getRemainingPoint() - paidPoint);
+			usersDAO.save(author);
+		}
 		News news = News.builder()
 			.title(request.getTitle())
 			.subtitle(request.getSubtitle())

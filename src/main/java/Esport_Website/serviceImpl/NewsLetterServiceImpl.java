@@ -3,6 +3,7 @@ package Esport_Website.serviceImpl;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import Esport_Website.DAO.NewsLetterDAO;
@@ -25,8 +26,14 @@ public class NewsLetterServiceImpl implements NewsLetterService{
 		}
 		
 		NewsLetter newsLetter = NewsLetter.builder().email(email).build();
-		
-		return dao.save(newsLetter);
+		NewsLetter saved = dao.save(newsLetter);
+		sendWelcomeEmailAsync(email);
+		return saved;
 	}	
-	
+
+	@Async
+	public void sendWelcomeEmailAsync(String email) {
+		// Giả lập gửi email bất đồng bộ
+		System.out.println("[Async] Gửi email chào mừng tới: " + email + " trên thread: " + Thread.currentThread().getName());
+	}
 }
