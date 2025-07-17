@@ -111,6 +111,11 @@ public class NewsServiceImpl implements NewsService{
 	}
 	
 	@Override
+	public Page<News> getPendingArticles(Pageable pageable) {
+		return dao.findAllByStatusOrderByRemainingPointDesc("pending", pageable);
+	}
+	
+	@Override
 	public News createNews(CreateNewsRequest request) {
 		// Validate required fields
 		if (request.getTitle() == null || request.getTitle().trim().isEmpty()) {
@@ -173,5 +178,12 @@ public class NewsServiceImpl implements NewsService{
 		
 		// Save the news with details
 		return dao.save(savedNews);
+	}
+
+	@Override
+	public News updateNewsStatus(Integer newsId, String status) {
+		News news = dao.findById(newsId).orElseThrow(() -> new RuntimeException("Không tìm thấy bài viết"));
+		news.setStatus(status);
+		return dao.save(news);
 	}
 }

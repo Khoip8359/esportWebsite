@@ -31,4 +31,8 @@ public interface NewsService {
 	List<News> getNewsByUser(Integer userId);
 	
 	News createNews(CreateNewsRequest request);
+	
+	Page<News> getPendingArticles(Pageable pageable);
+
+	News updateNewsStatus(Integer newsId, String status);
 }

@@ -53,6 +53,15 @@ public class NewsListController {
 		
 		return hotNews;
 	}
+	
+	@GetMapping("/api/pending-articles")
+	public Page<News> getPendingArticles(
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "10") int size
+	) {
+		PageRequest pageable = PageRequest.of(page, size);
+		return newsService.getPendingArticles(pageable);
+	}
 
 	@GetMapping("/api/news/search")
 	public Page<News> searchNews(
@@ -87,4 +96,14 @@ public class NewsListController {
 		
 		return news;
 	}
+	
+	@GetMapping("/api/news/all")
+	public List<News> getAllNews(){
+		
+		List<News> news = newsService.getALL();
+		
+		return news;
+		
+	}
+	
 }
