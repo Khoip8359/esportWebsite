@@ -1,4 +1,4 @@
-package com.example.Esport_Website.config;
+package Esport_Website.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -10,7 +10,7 @@ public class MakeMeWake {
 	
 	private final RestTemplate restTemplate = new RestTemplate();
 	
-//	@Scheduled(fixedRate = 1000 * 60 * 10)
+	@Scheduled(fixedRate = 1000 * 60 * 10)
 	@Async
     public void pingMyself() {
         try {
