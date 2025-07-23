@@ -29,25 +29,27 @@ public class PaymentServiceImpl implements PaymentService {
 		Matcher matcher = pattern.matcher(webhook.getContent());
 		
 		try {
-			if(matcher.group(0).contains("NAP")) {
-				
-				UserTransaction transaction = transDao.findById(Integer.parseInt(matcher.group(1))).orElse(null);
-				
-				if(transaction != null) {
+			if(matcher.find()) {
+				if(matcher.group(0).contains("NAP")) {
 					
-					transaction.setStatus("complete");
-					transDao.save(transaction);
+					UserTransaction transaction = transDao.findById(Integer.parseInt(matcher.group(1))).orElse(null);
 					
-					int point = transaction.getTotal() / 100;
-					
-					Users user = transaction.getUser();
-					user.setRemainingPoint(user.getRemainingPoint() + point);
-					udao.save(user);
-					
-					System.out.println("Đã xác nhận thanh toán cho giao dịch số " + matcher.group(1));
+					if(transaction != null) {
+						
+						transaction.setStatus("complete");
+						transDao.save(transaction);
+						
+						int point = transaction.getTotal() / 100;
+						
+						Users user = transaction.getUser();
+						user.setRemainingPoint(user.getRemainingPoint() + point);
+						udao.save(user);
+						
+						System.out.println("Đã xác nhận thanh toán cho giao dịch số " + matcher.group(1));
+						
+					}
 					
 				}
-				
 			}
 		} catch (Exception e) {
 			System.out.println("Đã có lỗi xảy ra: " + e);
