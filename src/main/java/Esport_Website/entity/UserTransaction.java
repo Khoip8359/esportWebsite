@@ -10,6 +10,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,11 +20,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UserTransaction {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer transactionId;
 
     private Integer total;
+    
+    @Default
     private Date createdDate = new Date();
     private String status;
 
@@ -32,5 +37,5 @@ public class UserTransaction {
 
     @ManyToOne
     @JoinColumn(name = "package_id")
-    private Package aPackage;
+    private Package Package;
 }
