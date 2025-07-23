@@ -1,6 +1,8 @@
 package Esport_Website.serviceImpl;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,19 +24,27 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Override
 	public void handleWebhook(Webhook webhook) {
-		String[] parts = webhook.getContent().split(" ");
+		
+		Pattern pattern = Pattern.compile("NAP\\s+(\\d+)");
+		Matcher matcher = pattern.matcher(webhook.getContent());
 		
 		try {
-			if(parts[0].equals("NAP")) {
+			if(matcher.group(0).contains("NAP")) {
 				
-				UserTransaction transaction = transDao.findById(Integer.parseInt(parts[1])).orElse(null);
+				UserTransaction transaction = transDao.findById(Integer.parseInt(matcher.group(1))).orElse(null);
 				
 				if(transaction != null) {
 					
 					transaction.setStatus("complete");
 					transDao.save(transaction);
 					
-					System.out.println("Đã xác nhận thanh toán cho giao dịch số " + parts[1]);
+					int point = transaction.getTotal() / 100;
+					
+					Users user = transaction.getUser();
+					user.setRemainingPoint(user.getRemainingPoint() + point);
+					udao.save(user);
+					
+					System.out.println("Đã xác nhận thanh toán cho giao dịch số " + matcher.group(1));
 					
 				}
 				
