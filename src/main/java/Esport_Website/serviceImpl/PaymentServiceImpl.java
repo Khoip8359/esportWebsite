@@ -36,7 +36,7 @@ public class PaymentServiceImpl implements PaymentService {
 					
 					if(transaction != null) {
 						
-						transaction.setStatus("complete");
+						transaction.setStatus("completed");
 						transDao.save(transaction);
 						
 						int point = transaction.getTotal() / 100;
