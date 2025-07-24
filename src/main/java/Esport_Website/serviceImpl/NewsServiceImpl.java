@@ -47,8 +47,10 @@ public class NewsServiceImpl implements NewsService{
         int likeCount = rdao.countByNews_NewsId(newsId).orElse(0);
         if (news == null) return null;
 
-        // Tăng lượt view
         news.setViews(news.getViews() + 1);
+        if(news.getRemainingPoint()>0) {
+        	news.setRemainingPoint(news.getRemainingPoint()-1);
+        }
         dao.save(news);
 
         NewsWithDetailDTO dto = new NewsWithDetailDTO();
