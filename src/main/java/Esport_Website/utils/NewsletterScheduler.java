@@ -23,7 +23,7 @@ public class NewsletterScheduler {
     private LatestNewsService latestNewsService;
 
     // Gửi lúc 6h và 18h mỗi ngày
-    @Scheduled(cron = "0 0 6,18 * * ?")
+    @Scheduled(cron = "0 0 6,18 * * ?", zone = "Asia/Ho_Chi_Minh")
     public void sendDailyNewsletter() {
         List<String> emails = recipientService.getAllEmails();
         String subject = "Bản tin Esport mới nhất";
