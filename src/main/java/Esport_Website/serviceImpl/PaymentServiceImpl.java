@@ -7,9 +7,13 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import Esport_Website.DAO.AccountDAO;
+import Esport_Website.DAO.RoleDAO;
 import Esport_Website.DAO.UserTransactionDAO;
 import Esport_Website.DAO.UsersDAO;
 import Esport_Website.dto.Webhook;
+import Esport_Website.entity.Account;
+import Esport_Website.entity.Role;
 import Esport_Website.entity.UserTransaction;
 import Esport_Website.entity.Users;
 import Esport_Website.service.PaymentService;
@@ -21,6 +25,10 @@ public class PaymentServiceImpl implements PaymentService {
 	UserTransactionDAO transDao;
 	@Autowired
 	UsersDAO udao;
+	@Autowired
+	RoleDAO roleDao;
+	@Autowired
+	AccountDAO accountDao;
 
 	@Override
 	public void handleWebhook(Webhook webhook) {
@@ -44,6 +52,10 @@ public class PaymentServiceImpl implements PaymentService {
 						Users user = transaction.getUser();
 						user.setRemainingPoint(user.getRemainingPoint() + point);
 						udao.save(user);
+						
+						Account acc = accountDao.findByUsername(user.getName()).orElse(null);
+						acc.setPoint(acc.getPoint() + point);
+						accountDao.save(acc);
 						
 						System.out.println("Đã xác nhận thanh toán cho giao dịch số " + matcher.group(1));
 						
@@ -73,6 +85,25 @@ public class PaymentServiceImpl implements PaymentService {
 		UserTransaction trans = UserTransaction.builder().total(total).status("pending").user(user).build();
 		
 		return transDao.save(trans);
+	}
+
+	@Override
+	public void upgrade(Integer userId) {
+		Users user = udao.findById(userId).orElse(null);
+		if(user.getRemainingPoint()>=299) {
+			int before_point = user.getRemainingPoint();
+			int after_point = before_point - 299;
+			user.setRemainingPoint(after_point);
+			udao.save(user);
+			
+			Account acc = accountDao.findByUsername(user.getName()).orElse(null);
+			
+			Role role = roleDao.findById(2).orElse(null);
+			if(role != null && acc != null) {
+				acc.getRoles().add(role);
+				accountDao.save(acc);
+			}
+		}
 	}
 	
 	

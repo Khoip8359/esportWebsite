@@ -13,4 +13,6 @@ public interface PaymentService {
 
 	UserTransaction createNewTrans(Integer total, Integer userId);
 
+	void upgrade(Integer userId);
+
 }

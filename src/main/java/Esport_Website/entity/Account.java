@@ -47,7 +47,7 @@ public class Account {
     private String providerID;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "Account_Role",
+    @JoinTable(name = "account_role",
             joinColumns = @JoinColumn(name = "account_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();

@@ -51,4 +51,9 @@ public class PaymentController {
 		}
     }
     
+    @PostMapping("/api/upgrade")
+    public void upgrade(@RequestParam Integer userId) {
+    	paymentService.upgrade(userId);
+    }
+    
 }
