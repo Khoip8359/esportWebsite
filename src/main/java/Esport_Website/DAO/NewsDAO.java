@@ -32,6 +32,9 @@ public interface NewsDAO extends JpaRepository<News, Integer> {
 	@Query("SELECT n FROM News n LEFT JOIN FETCH n.newsDetails WHERE n.newsId = (SELECT MAX(n2.newsId) FROM News n2)")
 	News findLatestNewsWithDetails();
 	
-	@Query("SELECT DISTINCT n FROM News n LEFT JOIN FETCH n.newsDetails Where n.Status = 'published' ORDER BY n.createdDate DESC")
+	@Query(
+			  value = "SELECT DISTINCT n.* FROM news n LEFT JOIN news_details d ON n.id = d.news_id WHERE n.status = 'published' ORDER BY n.created_date DESC LIMIT 3",
+			  nativeQuery = true
+			)
 	List<News> findTop3NewsWithDetails(Pageable pageable);
 }
