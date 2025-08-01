@@ -1,14 +1,15 @@
 package Esport_Website.utils;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
 import Esport_Website.EsportWebsiteApplication;
 import Esport_Website.service.EmailService;
 import Esport_Website.service.LatestNewsService;
 import Esport_Website.service.NewsletterRecipientService;
-
-import java.util.List;
 import jakarta.mail.MessagingException;
 
 @Component
