@@ -33,8 +33,9 @@ public interface NewsDAO extends JpaRepository<News, Integer> {
 	News findLatestNewsWithDetails();
 	
 	@Query(
-			  value = "SELECT DISTINCT n.* FROM news n LEFT JOIN news_details d ON n.id = d.news_id WHERE n.status = 'published' ORDER BY n.created_date DESC LIMIT 3",
+			  value = "SELECT DISTINCT n.* FROM news n LEFT JOIN news_details d ON n.id = d.news_id WHERE n.status = 'published' ORDER BY n.created_date DESC",
 			  nativeQuery = true
 			)
-	List<News> findTop3NewsWithDetails(Pageable pageable);
+			List<News> findTop3NewsWithDetails(Pageable pageable);
+
 }
