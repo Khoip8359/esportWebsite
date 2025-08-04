@@ -97,10 +97,11 @@ public class PaymentServiceImpl implements PaymentService {
 			udao.save(user);
 			
 			Account acc = accountDao.findByUsername(user.getName()).orElse(null);
-			
+						
 			Role role = roleDao.findById(2).orElse(null);
 			if(role != null && acc != null) {
 				acc.getRoles().add(role);
+				acc.setPoint(after_point);
 				accountDao.save(acc);
 			}
 		}
